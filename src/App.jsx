@@ -5,6 +5,13 @@ const [email, setEmail] = useState('');
 const [password, setPassword] = useState('');
 const [name, setName] = useState ('');
 const [lastname, setLastname] = useState('');
+const [user, setUser] = useState(null);
+
+
+const handleLogin = async (e) => {
+  const response = await login(e, { email, password });
+  setUser(response.data);
+}
   return (
     <div>
       <h1>Hello world</h1>
@@ -25,8 +32,15 @@ const [lastname, setLastname] = useState('');
         <input type="text" id="inputEmail" onChange={(e)=>{setEmail(e.target.value)}}/>
         <label htmlFor="inputPassword">Passwors</label>
         <input type="password" id="inputPassword" onChange={(e)=>{setPassword(e.target.value)}}/>
-        <button onClick={(e)=>{login(e, {email,password,name,lastname})}}>login</button>
+        <button onClick={(e)=>{handleLogin(e, {email,password,name,lastname})}}>login</button>
       </form>
+      
+      {user && (
+        <div>
+          <h2>Bienvenido, {user.name}!</h2>
+          <p>Email: {user.email}</p>
+        </div>
+      )}
     </div>
   )
 }
