@@ -3,7 +3,7 @@ export const register = async (e,objet) => {
   try {
     const { name, lastname, email, password } = objet;
 
-    const response = await fetch("http://localhost:3000/api/auth/register", {
+    const response = await fetch("https://upload-data-api.vercel.app/api/auth/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -34,7 +34,7 @@ export const login = async (e,objet) => {
   try {
     const { email, password } = objet;
 
-    const response = await fetch("http://localhost:3000/api/auth/login", {
+    const response = await fetch("https://upload-data-api.vercel.app/api/auth/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
