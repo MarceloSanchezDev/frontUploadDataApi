@@ -1,4 +1,4 @@
-import { use, useState } from "react"
+import { useEffect, useState } from "react"
 import { login, register } from "./utils/auth.utils";
 function App() {
 const [email, setEmail] = useState('');
@@ -7,6 +7,36 @@ const [name, setName] = useState ('');
 const [lastname, setLastname] = useState('');
 const [user, setUser] = useState(null);
 
+useEffect(() => {
+  const storedUser = localStorage.getItem('user');
+  if (storedUser) {
+    setUser(JSON.parse(storedUser));
+  }
+}, []);
+
+useEffect(() => {
+  if (user) {
+    localStorage.setItem('user', JSON.stringify(user));
+  } else {
+    localStorage.removeItem('user');
+  }
+}, [user]);
+
+useEffect(() => {
+  if (user){
+    const products = await fetch("https://upload-data-api.vercel.app/api/products", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${user.token}`
+      }.then(response => response.json()).then(data => {
+        console.log(data);
+      }).catch(error => {
+        console.error("Fetch products error:", error.message);
+      })
+    });
+  }
+}, [user]);
 
 const handleLogin = async (e) => {
   const response = await login(e, { email, password });
